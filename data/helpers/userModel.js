@@ -7,6 +7,9 @@ module.exports = {
   find
 };
 
+// ******************************************************
+// add
+// ******************************************************
 function add(user) {
   return db('users')
     .insert(user,"id")
@@ -15,6 +18,9 @@ function add(user) {
     });
 }
 
+// ******************************************************
+// findById
+// ******************************************************
 function findById(id) {
   return db("users")
     .select("id","username")
@@ -22,14 +28,21 @@ function findById(id) {
     .first();
 }
 
+// ******************************************************
+// findByUname
+// ******************************************************
 function findByUname(username) {
   // console.log("In findByUname",username);
   return db("users")
     .select("id", "username", "password") // make sure to return the password
+    // .select("id")
     .where('username','=',username)
     .first();
 }
 
+// ******************************************************
+// find
+// ******************************************************
 function find() {
   return db("users").select("id", "username");
 }

@@ -1,22 +1,32 @@
+// ********************************************************
 // Import Express and external middleware
+// ********************************************************
 const express = require('express');
 const bcrypt = require("bcryptjs");
 
-// Import Express middleware
+// ********************************************************
+// Set up express router
+// ********************************************************
 const router = express.Router();
 
+// ********************************************************
 // Import database access
+// ********************************************************
 const udb = require('../data/helpers/userModel');
 
+// ********************************************************
 //Import custom middleware
+// ********************************************************
 // None at this time
 
+// ********************************************************
 // Export router
+// ********************************************************
 module.exports = router;
 
 
 // ********************************************************
-// POST /register
+// POST /api/register
 // ********************************************************
 router.post('/register',(req,res)=>{
   let userInfo = req.body;
@@ -39,7 +49,7 @@ router.post('/register',(req,res)=>{
 })
 
 // ********************************************************
-// POST /login
+// POST /api/login
 // ********************************************************
 router.post("/login",(req,res)=>{
   let {username, password} =req.body;
@@ -47,6 +57,11 @@ router.post("/login",(req,res)=>{
   udb.findByUname(username)
     .then(user=>{
       if (user && bcrypt.compareSync(password, user.password)) {
+
+      //Save a session for the client and send back a cookie
+      req.session.user = { id:user.id };  
+      console.log("In router.post-/login & req.session:",req.session);
+
         res.status(200).json({ message: "Logged In" });
       }
       else {

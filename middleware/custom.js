@@ -1,3 +1,10 @@
+// ********************************************************
+// ********************************************************
+module.exports = {
+  defaultResponse, 
+  logger, 
+  restricted
+};
 
 
 // ********************************************************
@@ -18,5 +25,15 @@ function logger(req, res, next) {
 
 
 // ********************************************************
+// restricted
 // ********************************************************
-module.exports = {defaultResponse, logger};
+function restricted(req, res, next) {
+  console.log("In func restricted & req.session:",req.session);
+  if (req.session && req.session.user) {
+    next();
+  } else {
+    res.status(401).json({ message: "You shall not pass!!" });
+  }
+};
+
+
